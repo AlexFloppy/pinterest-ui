@@ -1,13 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { PinCard } from "./PinCard";
 
-interface Pin {
+export interface Pin {
   id: string;
   image_url: string;
   description: string;
@@ -72,7 +65,7 @@ const pins: Pin[] = [
     "authorId": "787e1d38-5e9d-4bb9-bee6-f9294b730501",
     "boardId": "e9ea9e3d-13bd-418a-ba5e-bd354c017ab2"
   },
-  
+
 ];
 
 export const Pins = () => {
@@ -96,31 +89,9 @@ export const Pins = () => {
       </p>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:block columns-2  lg:columns-3 lg:gap-6 mx-auto space-y-4 lg:space-y-6">
-        {pins.map(
-          ({ image_url, authorId, description}: Pin) => (
-            <Card
-              key={authorId}
-              className="max-w-md md:break-inside-avoid overflow-hidden"
-            >
-              <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                <Avatar>
-                  <AvatarImage
-                    alt=""
-                    src={image_url}
-                  />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-
-                <div className="flex flex-col">
-                  <CardTitle className="text-lg">{authorId}</CardTitle>
-                  <CardDescription>{authorId}</CardDescription>
-                </div>
-              </CardHeader>
-
-              <CardContent><img src={image_url}/>{description}</CardContent>
-            </Card>
-          )
-        )}
+        {pins.map(({image_url, authorId, description}) => (
+          <PinCard image_url={image_url} authorId={authorId} description={description} />
+        ))}
       </div>
     </section>
   );

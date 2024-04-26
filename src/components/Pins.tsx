@@ -1,74 +1,30 @@
 import { PinCard } from "./PinCard";
+import { IPin }  from "../interfaces"
 
-export interface Pin {
-  id: string;
-  image_url: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-  authorId: string;
-  boardId: string;
-}
+import { addPin } from '../store/actions';
 
-const pins: Pin[] = [
-  {
-    "id": "d7771470-f062-4832-bfb1-5d9e57b211f6",
-    "image_url": "https://fastly.picsum.photos/id/612/200/300.jpg?hmac=vJ35AV5-TQa5ET5az0aESTnI3zaFCjRYD9OnYaiYIYc",
-    "description": "Image description3",
-    "createdAt": "2024-03-30T14:28:07.457Z",
-    "updatedAt": "2024-03-30T14:28:07.457Z",
-    "authorId": "787e1d38-5e9d-4bb9-bee6-f9294b730501",
-    "boardId": "e9ea9e3d-13bd-418a-ba5e-bd354c017ab2"
-  },
-  {
-    "id": "d7771470-f062-4832-bfb1-5d9e57b211f6",
-    "image_url": "https://fastly.picsum.photos/id/612/200/300.jpg?hmac=vJ35AV5-TQa5ET5az0aESTnI3zaFCjRYD9OnYaiYIYc",
-    "description": "Image description3",
-    "createdAt": "2024-03-30T14:28:07.457Z",
-    "updatedAt": "2024-03-30T14:28:07.457Z",
-    "authorId": "787e1d38-5e9d-4bb9-bee6-f9294b730501",
-    "boardId": "e9ea9e3d-13bd-418a-ba5e-bd354c017ab2"
-  },
-  {
-    "id": "d7771470-f062-4832-bfb1-5d9e57b211f6",
-    "image_url": "https://fastly.picsum.photos/id/612/200/300.jpg?hmac=vJ35AV5-TQa5ET5az0aESTnI3zaFCjRYD9OnYaiYIYc",
-    "description": "Image description3",
-    "createdAt": "2024-03-30T14:28:07.457Z",
-    "updatedAt": "2024-03-30T14:28:07.457Z",
-    "authorId": "787e1d38-5e9d-4bb9-bee6-f9294b730501",
-    "boardId": "e9ea9e3d-13bd-418a-ba5e-bd354c017ab2"
-  },
-  {
-    "id": "d7771470-f062-4832-bfb1-5d9e57b211f6",
-    "image_url": "https://fastly.picsum.photos/id/612/200/300.jpg?hmac=vJ35AV5-TQa5ET5az0aESTnI3zaFCjRYD9OnYaiYIYc",
-    "description": "Image description3",
-    "createdAt": "2024-03-30T14:28:07.457Z",
-    "updatedAt": "2024-03-30T14:28:07.457Z",
-    "authorId": "787e1d38-5e9d-4bb9-bee6-f9294b730501",
-    "boardId": "e9ea9e3d-13bd-418a-ba5e-bd354c017ab2"
-  },
-  {
-    "id": "d7771470-f062-4832-bfb1-5d9e57b211f6",
-    "image_url": "https://fastly.picsum.photos/id/612/200/300.jpg?hmac=vJ35AV5-TQa5ET5az0aESTnI3zaFCjRYD9OnYaiYIYc",
-    "description": "Image description3",
-    "createdAt": "2024-03-30T14:28:07.457Z",
-    "updatedAt": "2024-03-30T14:28:07.457Z",
-    "authorId": "787e1d38-5e9d-4bb9-bee6-f9294b730501",
-    "boardId": "e9ea9e3d-13bd-418a-ba5e-bd354c017ab2"
-  },
-  {
-    "id": "d7771470-f062-4832-bfb1-5d9e57b211f6",
-    "image_url": "https://fastly.picsum.photos/id/612/200/300.jpg?hmac=vJ35AV5-TQa5ET5az0aESTnI3zaFCjRYD9OnYaiYIYc",
-    "description": "Image description3",
-    "createdAt": "2024-03-30T14:28:07.457Z",
-    "updatedAt": "2024-03-30T14:28:07.457Z",
-    "authorId": "787e1d38-5e9d-4bb9-bee6-f9294b730501",
-    "boardId": "e9ea9e3d-13bd-418a-ba5e-bd354c017ab2"
-  },
+// Функция connect является связующим между компонентом и store из redux,
+// эта функция принимает два параметра:
+// 1. функция, в которую аргументом приходит state из store, которая возвращает объект, в котором
+//    мы должны указать какие данные хотим получить в своем компоненте
+// 2. функция, которая должна вернуть ваши actions, которые в дальнейшем тоже попадут в свойства компонента который оборачиваете.
+import { connect } from 'react-redux';
 
-];
+// Это специальная функция которая все полученые в объекте actions будет оборачивать в функцию dispatch,
+// это нужно для того чтобы вызывая свои actions вы не просто получали объект, а обращались с ним в глобальный store,
+// где с помощью reducers будет идти обработка этого action'a
+import { bindActionCreators } from 'redux';
 
-export const Pins = () => {
+// mapStateToProps - выбираем какие данные нам нужны из store, которые в дальнейшем запишутся в props
+// компонента который мы оборачиваем.
+const mapStateToProps = (state:any) => ({ pins: state.pins });
+
+// mapDispatchToProps - передаем все нужные нам actions в оборачеваемый компонент, но перед этим оборачиваем
+// все actions в функцию dispatch
+const mapDispatchToProps = (dispatch:any) => ( bindActionCreators({ addPin }, dispatch) );
+
+const Pins = (props:any) => {
+  console.log(props)
   return (
     <section
       id="pins"
@@ -89,10 +45,16 @@ export const Pins = () => {
       </p>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:block columns-2  lg:columns-3 lg:gap-6 mx-auto space-y-4 lg:space-y-6">
-        {pins.map(({image_url, authorId, description}) => (
+        {props.pins.map(({image_url, authorId, description}:IPin) => (
           <PinCard image_url={image_url} authorId={authorId} description={description} />
         ))}
       </div>
     </section>
   );
 };
+
+// @connect - "@" - обозначает декоратор, это es7. Функция "connect" декорирует объект, имеется ввиду что на
+// выходе мы получаем новый, измененный компонент который содержит в себе дополнительные функции и свойства,
+// а какие именно - мы определяем в функциях передаваемых внутрь функции connect.
+export default connect(mapStateToProps, mapDispatchToProps)(Pins)
+

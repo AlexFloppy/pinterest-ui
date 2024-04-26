@@ -12,7 +12,7 @@
 // import { Services } from "./components/Services";
 // import { Sponsors } from "./components/Sponsors";
 // import { Team } from "./components/Team";
-import { Pins } from "./components/Pins";
+import Pins from "./components/Pins";
 import "./App.css";
 
 function App() {

@@ -1,7 +1,7 @@
 import { PinCard } from "./PinCard";
 import { IPin }  from "../interfaces"
-
 import { addPin } from '../store/actions';
+import pins from "@/store/thunk/pins";
 
 // Функция connect является связующим между компонентом и store из redux,
 // эта функция принимает два параметра:
@@ -15,13 +15,16 @@ import { connect } from 'react-redux';
 // где с помощью reducers будет идти обработка этого action'a
 import { bindActionCreators } from 'redux';
 
+
+
+
 // mapStateToProps - выбираем какие данные нам нужны из store, которые в дальнейшем запишутся в props
 // компонента который мы оборачиваем.
 const mapStateToProps = (state:any) => ({ pins: state.pins });
 
 // mapDispatchToProps - передаем все нужные нам actions в оборачеваемый компонент, но перед этим оборачиваем
 // все actions в функцию dispatch
-const mapDispatchToProps = (dispatch:any) => ( bindActionCreators({ addPin }, dispatch) );
+const mapDispatchToProps = (dispatch:any) => ( bindActionCreators({ ...pins }, dispatch) );
 
 const Pins = (props:any) => {
   console.log(props)
@@ -45,10 +48,12 @@ const Pins = (props:any) => {
       </p>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:block columns-2  lg:columns-3 lg:gap-6 mx-auto space-y-4 lg:space-y-6">
-        {props.pins.map(({image_url, authorId, description}:IPin) => (
-          <PinCard image_url={image_url} authorId={authorId} description={description} />
+        {props.pins.map(({image_url, authorId, description, id}:IPin) => (
+          <PinCard key={id} image_url={image_url} authorId={authorId} description={description} />
         ))}
       </div>
+
+      <button onClick={() => props.create({...props.pins[0]})}>Add Pin</button>
     </section>
   );
 };

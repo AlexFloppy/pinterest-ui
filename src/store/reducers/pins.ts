@@ -64,6 +64,8 @@ const initialState =
     switch (action.type) {
         case types.ADD_PIN: 
             return [...state, action.payload];
+        case types.ADD_PINS:
+            return [...action.payload]
         default:
             return state;
     }

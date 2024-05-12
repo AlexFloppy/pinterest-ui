@@ -3,6 +3,7 @@ import { IPin }  from "../interfaces"
 import { addPin } from '../store/actions';
 import pins from "@/store/thunk/pins";
 
+
 // Функция connect является связующим между компонентом и store из redux,
 // эта функция принимает два параметра:
 // 1. функция, в которую аргументом приходит state из store, которая возвращает объект, в котором
@@ -14,6 +15,7 @@ import { connect } from 'react-redux';
 // это нужно для того чтобы вызывая свои actions вы не просто получали объект, а обращались с ним в глобальный store,
 // где с помощью reducers будет идти обработка этого action'a
 import { bindActionCreators } from 'redux';
+import { PinForm } from "./forms/PinForm";
 
 
 
@@ -24,7 +26,7 @@ const mapStateToProps = (state:any) => ({ pins: state.pins });
 
 // mapDispatchToProps - передаем все нужные нам actions в оборачеваемый компонент, но перед этим оборачиваем
 // все actions в функцию dispatch
-const mapDispatchToProps = (dispatch:any) => ( bindActionCreators({ ...pins }, dispatch) );
+const mapDispatchToProps = (dispatch:any) => ( bindActionCreators({ savePin:pins.create }, dispatch) );
 
 const Pins = (props:any) => {
   console.log(props)
@@ -33,6 +35,7 @@ const Pins = (props:any) => {
       id="pins"
       className="container py-24 sm:py-32"
     >
+      
       <h2 className="text-3xl md:text-4xl font-bold">
         Discover Why
         <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
@@ -42,18 +45,16 @@ const Pins = (props:any) => {
         This Landing Page
       </h2>
 
-      <p className="text-xl text-muted-foreground pt-4 pb-8">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non unde error
-        facere hic reiciendis illo
-      </p>
+      <PinForm onSubmit={props.savePin}/>
 
+    
       <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:block columns-2  lg:columns-3 lg:gap-6 mx-auto space-y-4 lg:space-y-6">
         {props.pins.map(({image_url, authorId, description, id}:IPin) => (
           <PinCard key={id} image_url={image_url} authorId={authorId} description={description} />
         ))}
       </div>
 
-      <button onClick={() => props.create({...props.pins[0]})}>Add Pin</button>
+      {/* <button onClick={() => props.create({...props.pins[0]})}>Add Pin</button> */}
     </section>
   );
 };
